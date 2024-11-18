@@ -1,0 +1,269 @@
+﻿// C:\DataFlex Projects\CateringWorkspace\AppSrc\MenuItem.wo
+// Creating Zoom for menu items
+//
+
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+Use cWebForm.pkg
+
+Use cMenuItemsDataDictionary.dd
+Use cWebButton.pkg
+Use cWebImage.pkg
+Use cWebFileUploadButton.pkg
+Use cWebResourceManager.pkg
+
+Object oMenuItem is a cWebView
+    Set piColumnCount to 12
+    Set psCaption to "Menu Item Creation"
+    Set peWebViewStyle to wvsDrilldown
+    Set peViewType to vtZoom
+    Set pbShowCaption to False
+    Set Verify_Save_Msg to 0
+    Set piMaxWidth to 1024
+    
+    String photoPath
+    
+    Object oMenuItemResourceUser is a cWebResourceManager
+    End_Object
+
+    Object oMenuItems_DD is a cMenuItemsDataDictionary
+    End_Object 
+
+    Set Main_DD To oMenuItems_DD
+    Set Server  To oMenuItems_DD
+
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        WebSetResponsive piColumnCount rmMobile to 4
+
+        Object oMenuItemsitemId is a cWebForm
+            Entry_Item MenuItems.itemId
+            Set piColumnSpan to 2
+            Set piColumnIndex to 1
+            Set peLabelPosition to lpTop
+            Set psLabel to "itemId"
+        End_Object 
+
+        Object oItemImage is a cWebImage
+            Set piColumnSpan to 3
+            Set piColumnIndex to 6
+            Set pbFitZoom to False
+            Set pePosition to wiFit
+            
+        End_Object
+
+        Object oItemImageUploadButton is a cWebFileUploadButton
+           
+            Set piColumnSpan to 3
+            Set psCaption to "Upload Image"
+            Set piColumnIndex to 6
+        
+            // Called for each file upload to generate the local path where the file is stored.
+            Function OnFileUpload String sFileName Integer iBytes String sMime Returns String
+                String sPath
+                
+                Boolean uploadFolderExsist fileAlreadyExsist
+                String uploadFolderPath
+                
+                // Determine local path based on workspace setting
+                Get psDataPath of (phoWorkspace(ghoApplication)) to sPath
+                Move (sPath + "\uploads") to uploadFolderPath
+                
+                File_Exist  uploadFolderPath uploadFolderExsist
+                
+                If (not(uploadFolderExsist)) Begin
+                    Make_Directory uploadFolderPath
+                End
+                
+                
+                Send RegisterDownloadFolder of oMenuItemResourceUser uploadFolderPath
+                
+                Move (uploadFolderPath + "\" + sFileName) to sPath
+                
+                File_Exist sPath fileAlreadyExsist
+                
+                If (fileAlreadyExsist) Begin
+                    EraseFile sPath
+                End
+                
+                Function_Return sPath
+            End_Function
+
+            Procedure OnFileFinished String sFileName String sLocalPath
+                Forward Send OnFileFinished sFileName sLocalPath
+                Send UpdateLocalImage of oItemImage sLocalPath
+                
+//                Send saveImage of oMenuItems_DD sLocalPath
+
+                Move sLocalPath to photoPath
+                
+                
+                
+            End_Procedure
+
+            
+            
+        End_Object
+
+        Object oMenuItemsname is a cWebForm
+            Entry_Item MenuItems.name
+            Set piColumnSpan to 4
+            Set piColumnIndex to 1
+            Set peLabelPosition to lpTop
+            Set psLabel to "name"
+        End_Object 
+
+        Object oMenuItemsprice is a cWebForm
+            Entry_Item MenuItems.price
+            Set piColumnSpan to 4
+            Set piColumnIndex to 5
+            Set peLabelPosition to lpTop
+            Set psLabel to "price"
+        End_Object 
+
+        Object oMenuItemscusineType is a cWebCombo
+            Entry_Item MenuItems.cusineType
+            Set piColumnSpan to 4
+            Set piColumnIndex to 1
+            Set peLabelPosition to lpTop
+            Set psLabel to "cusineType"
+        End_Object 
+
+        Object oWebButton1 is a cWebButton
+            Set piColumnSpan to 6
+            Set psCaption to "Add Item"
+            Set piColumnIndex to 3
+            Set peAlign to alignCenter
+        
+             Procedure OnClick
+                Set Field_Changed_Value of oMenuItems_DD Field MenuItems.imagePath to photoPath
+                Send Request_Save
+            End_Procedure
+
+        End_Object
+    End_Object 
+
+    Object oActionGroup is a cWebMenuGroup
+
+        Object oSaveBtn is a cWebMenuItem
+            Set psCSSClass to "WebSaveMenuItem"
+            Set psCaption to "Save"
+
+            Procedure OnClick
+                Set Field_Changed_Value of oMenuItems_DD Field MenuItems.imagePath to photoPath
+                Send Request_Save
+            End_Procedure
+
+        End_Object 
+
+        Object oEditBtn is a cWebMenuItem
+            Set psCSSClass to "WebEditMenuItem"
+            Set psCaption to "Edit"
+            Procedure OnClick
+                Send ChangeEditMode True
+                Send SetActionButtons
+            End_Procedure
+
+        End_Object 
+
+        Object oDeleteBtn is a cWebMenuItem
+            Set psCSSClass to "WebDeleteMenuItem"
+            Set psCaption to "Delete"
+            Set peActionDisplay to adMenu
+
+            Procedure OnClick
+                Send Request_Delete
+            End_Procedure
+
+        End_Object 
+
+        Object oCancelChangesBtn is a cWebMenuItem
+            Set psCSSClass to "WebIcon_Refresh"
+            Set psCaption to "Clear Changes"
+            Set peActionDisplay to adMenu
+            Procedure OnClick
+                Send RefreshRecord
+            End_Procedure
+
+        End_Object 
+    End_Object 
+
+    Procedure SetActionButtons
+        tWebNavigateData NavigateData
+        Boolean bHasRecord
+        Handle hoDD
+
+        Get Server to hoDD
+        Get GetNavigateData to NavigateData
+        Get HasRecord of hoDD to bHasRecord
+
+        // let's hide all buttons and then Show the ones we want
+        WebSet pbRender of oEditBtn to False
+        WebSet pbRender of oSaveBtn to False
+        WebSet pbRender of oCancelChangesBtn to False
+        WebSet pbRender of oDeleteBtn to False
+
+        If (NavigateData.bReadOnly) Begin
+            WebSet pbRender of oEditBtn to True
+        End
+        Else Begin
+            WebSet pbRender of oSaveBtn to True
+            WebSet pbRender of oCancelChangesBtn to True
+            WebSet pbRender of oDeleteBtn to bHasRecord
+        End
+    End_Procedure
+
+    Procedure OnViewSaved Handle hoServer Boolean bChanged
+        // Close after save
+        Send NavigateClose Self
+    End_Procedure
+
+    // this will close the view after a delete
+    Procedure OnViewDeleted Handle hoDDO
+        Send NavigateClose Self
+    End_Procedure
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+        Case Begin
+            Case (NavigateData.eNavigateType = nfFromMain)
+                // If from main, this is a propbably a main file Select to Zoom.
+                
+                
+                String sImagePath
+                Handle hoDD
+
+                Get Server to hoDD
+                Get Field_Current_Value of hoDD Field MenuItems.imagePath to sImagePath
+
+                If (sImagePath <> "") Begin
+                    String  sPath uploadFolderPath
+                
+                // Determine local path based on workspace setting
+                Get psDataPath of (phoWorkspace(ghoApplication)) to sPath
+                Move (sPath + "\uploads") to uploadFolderPath
+                Send RegisterDownloadFolder of oMenuItemResourceUser uploadFolderPath
+                    Send UpdateLocalImage of oItemImage sImagePath
+                End
+                
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromParent)
+                // If from parent, this is a constrained drill down.
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromChild)
+                // If from child, this is a probably a parent Zoom from a Zoom.
+                Case Break
+
+            Case Else // must be nfUndefined
+
+        Case End
+
+        Send SetActionButtons
+
+    End_Procedure
+
+End_Object 

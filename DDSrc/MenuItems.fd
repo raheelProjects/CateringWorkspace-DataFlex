@@ -1,0 +1,7 @@
+#REPLACE FILE1 MenuItems
+#REPLACE MenuItems.Recnum |FN1,0
+#REPLACE MenuItems.itemId |FN1,1
+#REPLACE MenuItems.name |FS1,2
+#REPLACE MenuItems.price |FN1,3
+#REPLACE MenuItems.cusineType |FS1,4
+#REPLACE MenuItems.imagePath |FS1,5

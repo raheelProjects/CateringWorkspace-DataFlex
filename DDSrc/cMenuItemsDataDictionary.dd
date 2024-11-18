@@ -1,0 +1,34 @@
+﻿Use DataDict.pkg
+
+Open MenuItems
+Open SysFile
+
+Object cusineType is a ValidationTable
+    Procedure Fill_List
+        Forward Send Fill_List
+        Send Add_Table_Value "Italian"
+        Send Add_Table_Value "FastFood"
+        Send Add_Table_Value "Desert"
+    End_Procedure
+End_Object
+
+Class cMenuItemsDataDictionary is a DataDictionary
+    
+    Procedure Construct_Object
+        Forward Send Construct_Object
+        Set Main_File to MenuItems.File_Number
+
+        Set Add_System_File to SysFile.File_Number DD_Lock_On_All
+
+        Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
+        Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
+        Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
+        Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+
+        Set Field_Auto_Increment Field MenuItems.itemId to File_Field SysFile.MenuItemId
+
+        Set Field_Value_Table Field MenuItems.cusineType to cusineType
+
+    End_Procedure
+
+End_Class

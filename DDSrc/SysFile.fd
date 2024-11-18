@@ -1,0 +1,6 @@
+#REPLACE FILE2 SysFile
+#REPLACE SysFile.Recnum |FN2,0
+#REPLACE SysFile.MenuItemId |FN2,1
+#REPLACE SysFile.BookingId |FN2,2
+#REPLACE SysFile.BookingDetailId |FN2,3
+#REPLACE SysFile.paymentId |FN2,4

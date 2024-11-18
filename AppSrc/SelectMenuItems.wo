@@ -1,0 +1,169 @@
+﻿// C:\DataFlex Projects\CateringWorkspace\AppSrc\SelectMenuItems.wo
+// Select Menu Items
+//
+
+Use cWebView.pkg
+Use cWebList.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+Use cWebColumnButton.pkg
+Use cWebColumn.pkg
+Use MenuItem.wo
+
+Use cMenuItemsDataDictionary.dd
+Use cWebImage.pkg
+Use cWebColumnImage.pkg
+
+Object oSelectMenuItems is a cWebView
+    Set psCaption to "Select Menu Items"
+    Set peWebViewStyle to wvsDrilldown
+    Set peViewType to vtSelect
+    Set piColumnCount to 12
+    Set pbShowCaption to False
+    Set piMaxWidth to 1024
+
+    Object oMenuItems_DD is a cMenuItemsDataDictionary
+    End_Object 
+
+    Set Main_DD To oMenuItems_DD
+    Set Server  To oMenuItems_DD
+
+
+    Object oList is a cWebList
+        Set piColumnSpan to 0
+        Set psCSSClass to "MobileList"
+        Set pbServerOnRowClick to True
+        Set pbFillHeight to True
+        Set pbShowHeader to False
+        Set piSortColumn to 0
+
+        Object oMenuItemsitemId is a cWebColumn
+            Entry_Item MenuItems.itemId
+            Set psCaption to "ID"
+            Set piWidth to 100
+            Set peAlign to alignLeft
+        End_Object 
+
+//        Object oWebColumnImage1 is a cWebColumnImage
+////            Entry_Item MenuItems.imagePath
+//            Set psCaption to "Img"
+//            Set piWidth to 100
+//            Set peAlign to ali
+//        End_Object
+
+        Object oMenuItemsname is a cWebColumn
+            Entry_Item MenuItems.name
+            Set psCaption to "Name"
+            Set piWidth to 745
+            Set peAlign to alignCenter
+            Set psCSSClass to "RowCaption"
+        End_Object 
+
+        Object oDetailButton is a cWebColumnButton
+            Set psCaption to "btn"
+            Set piWidth to 45
+            Set pbFixedWidth to True
+            Set pbResizable to False
+            Set piListRowSpan to 1
+            Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
+            Set peAlign to alignRight
+
+            WebRegisterPath ntNavigateForward oMenuItem
+
+            Procedure OnClick
+                Send NavigatePath
+            End_Procedure
+
+            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                Move True to NavigateData.bReadOnly
+            End_Procedure
+
+        End_Object 
+
+        WebRegisterPath ntNavigateForward oMenuItem
+
+        Procedure OnRowClick String sRowId
+            tWebNavigateData NavigateData
+            Get GetNavigateData to NavigateData
+
+            Case Begin
+                Case (NavigateData.eNavigateType = nfFromParent)
+                    Send NavigateForward of oMenuItem Self
+                    Case Break
+
+                Case (NavigateData.eNavigateType = nfFromChild)
+                    Send NavigateClose Self
+                    Case Break
+
+                Case (NavigateData.eNavigateType = nfFromMain)
+                    Send NavigateClose Self
+                    Case Break
+
+                Case Else // must be nfUndefined
+                    Send NavigateForward of oMenuItem Self
+
+            Case End
+        End_Procedure
+
+        Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+            Move True to NavigateData.bReadOnly
+        End_Procedure
+
+    End_Object 
+
+    Object oActionGroup is a cWebMenuGroup
+
+        Object oSearch is a cWebMenuItem
+            Set psCSSClass to "WebPromptMenuItem"
+            Set psCaption to "Search"
+
+            Procedure OnClick
+                Send Search of oList
+            End_Procedure
+
+        End_Object 
+
+        Object oNewButton is a cWebMenuItem
+            Set psCSSClass to "WebClearMenuItem"
+            Set psCaption to "New"
+
+            WebRegisterPath ntNavigateForward oMenuItem
+
+            Procedure OnClick
+                Send NavigatePath
+            End_Procedure
+
+            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                Move True to NavigateData.bNewRecord
+            End_Procedure
+
+        End_Object 
+    End_Object 
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Integer hoInvokingView Integer hoInvokingObject
+        WebSet pbRender of oNewButton to True
+        WebSet pbRender of oDetailButton to True
+
+        Case Begin
+            Case (NavigateData.eNavigateType = nfFromParent)
+                // If from parent, this is a constrained drill down
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromChild)
+                // If from child, this is a probably a parent lookup from a Zoom
+                Case Break
+
+            Case (NavigateData.eNavigateType = nfFromMain)
+                // If from main, this is a probably a main-file lookup from a Zoom
+                WebSet pbRender of oDetailButton to False
+                Case Break
+
+            Case Else // must be nfUndefined
+                // This may be the start of a drilldown query or this may be used for some kind of custom query.
+
+        Case End
+
+    End_Procedure
+
+
+End_Object 
