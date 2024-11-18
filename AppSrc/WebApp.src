@@ -63,6 +63,39 @@ Object oWebApp is a cWebApp
                                 Send NavigatePath
                         End_Procedure
                     End_Object
+
+                    Object oBookingSelectItem1 is a cWebMenuItem
+                        Set psCaption to "BookingSelect"
+
+                        WebRegisterPath ntNavigateBegin oBookingSelect
+
+                        Procedure OnClick
+                            Forward Send OnClick
+                                Send NavigatePath
+                        End_Procedure
+                    End_Object
+
+                    Object oBookingDetailSelectItem1 is a cWebMenuItem
+                        Set psCaption to "BookingDetailSelect"
+
+                        WebRegisterPath ntNavigateBegin oBookingDetailSelect
+
+                        Procedure OnClick
+                            Forward Send OnClick
+                                Send NavigatePath
+                        End_Procedure
+                    End_Object
+
+//                    Object oBookingWebViewItem1 is a cWebMenuItem
+//                        Set psCaption to "BookingWebView"
+//
+//                        WebRegisterPath ntNavigateBegin oBookingWebView
+//
+//                        Procedure OnClick
+//                            Forward Send OnClick
+//                                Send NavigatePath
+//                        End_Procedure
+//                    End_Object
                 End_Object
 
                 Object oSignOut_itm is a cWebMenuItem
@@ -146,6 +179,12 @@ Object oWebApp is a cWebApp
     Use Dashboard.wo
     Use MenuItem.wo
     Use SelectMenuItems.wo
+    Use BookingZoom.wo
+    Use BookingDetailZoom.wo
+    Use BookingSelect.wo
+    Use BookingDetailSelect.wo
+    Use BookingWebView.wo
+    Use ChangeUserDialog.wo
     Set phoDefaultView to oDashboard
 
 End_Object

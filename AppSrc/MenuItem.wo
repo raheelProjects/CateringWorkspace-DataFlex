@@ -96,7 +96,6 @@ Object oMenuItem is a cWebView
                 Forward Send OnFileFinished sFileName sLocalPath
                 Send UpdateLocalImage of oItemImage sLocalPath
                 
-//                Send saveImage of oMenuItems_DD sLocalPath
 
                 Move sLocalPath to photoPath
                 

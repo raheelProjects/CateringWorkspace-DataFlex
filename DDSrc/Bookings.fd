@@ -1,0 +1,8 @@
+#REPLACE FILE3 Bookings
+#REPLACE Bookings.Recnum |FN3,0
+#REPLACE Bookings.BookingId |FN3,1
+#REPLACE Bookings.CName |FS3,2
+#REPLACE Bookings.CPhoneNo |FN3,3
+#REPLACE Bookings.location |FS3,4
+#REPLACE Bookings.DeliveryDate |FD3,5
+#REPLACE Bookings.DeliveryTime |FS3,6

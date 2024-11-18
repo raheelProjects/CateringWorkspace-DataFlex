@@ -10,6 +10,7 @@ Use cWebMenuItem.pkg
 Use cWebLabel.pkg
 Use cWebList.pkg
 Use cWebColumn.pkg
+Use ChangeUserDialog.wo
 
 Object oDashboard is a cWebView
 
@@ -101,13 +102,27 @@ Object oDashboard is a cWebView
                 Set psCSSClass to "Tile DarkAlternate"
                 Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Bookings</div><div class="Tile_Subtitle"></div></div>'
             
-                // WebRegisterPath ntNavigateForwardCustom oYourViewName
+                WebRegisterPath ntNavigateForwardCustom oBookingWebView
                 
                 Procedure OnClick String sId String sParam
                     Send NavigatePath
                 End_Procedure
                 
             End_Object
+        End_Object
+
+        Object oWebSpacer1 is a cWebSpacer
+            Set piColumnIndex to 0
+            Set piColumnSpan to 24
+        End_Object
+
+        Object oWebButton1 is a cWebButton
+            Set piColumnSpan to 8
+            Set psCaption to "Update UserName"
+        
+            Procedure OnClick
+            Send Popup of oChangeUserDialog Self
+            End_Procedure
         End_Object
     
     End_Object

@@ -1,0 +1,6 @@
+BookingId
+CName
+CPhoneNo
+location
+DeliveryDate
+DeliveryTime

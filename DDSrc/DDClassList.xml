@@ -24,6 +24,28 @@
 			</DDClasses>
 		</Table>
 		<Table>
+			<tableNumber>3</tableNumber>
+			<tableName>Bookings</tableName>
+			<DDClasses>
+				<DDClass>
+					<className>cBookingsDataDictionary</className>
+					<classFile>cBookingsDataDictionary.dd</classFile>
+					<preferred>true</preferred>
+				</DDClass>
+			</DDClasses>
+		</Table>
+		<Table>
+			<tableNumber>4</tableNumber>
+			<tableName>BookingDetail</tableName>
+			<DDClasses>
+				<DDClass>
+					<className>cBookingDetailDataDictionary</className>
+					<classFile>cBookingDetailDataDictionary.dd</classFile>
+					<preferred>true</preferred>
+				</DDClass>
+			</DDClasses>
+		</Table>
+		<Table>
 			<tableNumber>263</tableNumber>
 			<tableName>WebAppSession</tableName>
 			<DDClasses>

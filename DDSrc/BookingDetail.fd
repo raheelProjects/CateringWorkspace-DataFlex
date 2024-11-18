@@ -1,0 +1,7 @@
+#REPLACE FILE4 BookingDetail
+#REPLACE BookingDetail.Recnum |FN4,0
+#REPLACE BookingDetail.BookingDetailId |FN4,1
+#REPLACE BookingDetail.BookingId |FN4,2
+#REPLACE BookingDetail.ItemId |FN4,3
+#REPLACE BookingDetail.Quantity |FN4,4
+#REPLACE BookingDetail.totalAmount |FN4,5

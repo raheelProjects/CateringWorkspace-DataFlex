@@ -1,5 +1,5 @@
-﻿// C:\DataFlex Projects\CateringWorkspace\AppSrc\SelectMenuItems.wo
-// Select Menu Items
+﻿// C:\DataFlex Projects\CateringWorkspace\AppSrc\BookingSelect.wo
+// BookingSelect
 //
 
 Use cWebView.pkg
@@ -8,25 +8,23 @@ Use cWebMenuGroup.pkg
 Use cWebMenuItem.pkg
 Use cWebColumnButton.pkg
 Use cWebColumn.pkg
-Use MenuItem.wo
+Use BookingZoom.wo
 
-Use cMenuItemsDataDictionary.dd
-Use cWebImage.pkg
-Use cWebColumnImage.pkg
+Use cBookingsDataDictionary.dd
 
-Object oSelectMenuItems is a cWebView
-    Set psCaption to "Select Menu Items"
+Object oBookingSelect is a cWebView
+    Set psCaption to "BookingSelect"
     Set peWebViewStyle to wvsDrilldown
     Set peViewType to vtSelect
     Set piColumnCount to 12
     Set pbShowCaption to False
     Set piMaxWidth to 1024
 
-    Object oMenuItems_DD is a cMenuItemsDataDictionary
+    Object oBookings_DD is a cBookingsDataDictionary
     End_Object 
 
-    Set Main_DD To oMenuItems_DD
-    Set Server  To oMenuItems_DD
+    Set Main_DD To oBookings_DD
+    Set Server  To oBookings_DD
 
 
     Object oList is a cWebList
@@ -34,41 +32,30 @@ Object oSelectMenuItems is a cWebView
         Set psCSSClass to "MobileList"
         Set pbServerOnRowClick to True
         Set pbFillHeight to True
-        Set pbShowHeader to True
+        Set pbShowHeader to False
         Set piSortColumn to 0
 
-        Object oMenuItemsitemId is a cWebColumn
-            Entry_Item MenuItems.itemId
+        Object oBookingsBookingId is a cWebColumn
+            Entry_Item Bookings.BookingId
             Set psCaption to "ID"
-            Set piWidth to 100
-            Set peAlign to alignLeft
+            Set piWidth to 99
         End_Object 
 
-//        Object oWebColumnImage1 is a cWebColumnImage
-////            Entry_Item MenuItems.imagePath
-//            Set psCaption to "Img"
-//            Set piWidth to 100
-//            Set peAlign to ali
-//        End_Object
-
-        Object oMenuItemsname is a cWebColumn
-            Entry_Item MenuItems.name
-            Set psCaption to "Name"
-            Set piWidth to 745
-            Set peAlign to alignCenter
-            Set psCSSClass to "RowCaption"
+        Object oBookingsCName is a cWebColumn
+            Entry_Item Bookings.CName
+            Set psCaption to "Customer Name"
+            Set piHeight to 30
+            Set piWidth to 248
         End_Object 
-        
-        Object oMenuItemsPrice is a cWebColumn
-            Entry_Item MenuItems.price
-            Set psCaption to "Price (Euro)"
-            Set piWidth to 745
-            Set peAlign to alignCenter
-            Set psCSSClass to "RowCaption"
+
+        Object oBookingsDeliveryDate is a cWebColumn
+            Entry_Item Bookings.DeliveryDate
+            Set psCaption to "Booking Date"
+            Set piWidth to 124
         End_Object 
 
         Object oDetailButton is a cWebColumnButton
-            Set psCaption to "info"
+            Set psCaption to "btn"
             Set piWidth to 45
             Set pbFixedWidth to True
             Set pbResizable to False
@@ -76,7 +63,7 @@ Object oSelectMenuItems is a cWebView
             Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
             Set peAlign to alignRight
 
-            WebRegisterPath ntNavigateForward oMenuItem
+            WebRegisterPath ntNavigateForward oBookingZoom
 
             Procedure OnClick
                 Send NavigatePath
@@ -88,7 +75,7 @@ Object oSelectMenuItems is a cWebView
 
         End_Object 
 
-        WebRegisterPath ntNavigateForward oMenuItem
+        WebRegisterPath ntNavigateForward oBookingZoom
 
         Procedure OnRowClick String sRowId
             tWebNavigateData NavigateData
@@ -96,7 +83,7 @@ Object oSelectMenuItems is a cWebView
 
             Case Begin
                 Case (NavigateData.eNavigateType = nfFromParent)
-                    Send NavigateForward of oMenuItem Self
+                    Send NavigateForward of oBookingZoom Self
                     Case Break
 
                 Case (NavigateData.eNavigateType = nfFromChild)
@@ -108,7 +95,7 @@ Object oSelectMenuItems is a cWebView
                     Case Break
 
                 Case Else // must be nfUndefined
-                    Send NavigateForward of oMenuItem Self
+                    Send NavigateForward of oBookingZoom Self
 
             Case End
         End_Procedure
@@ -135,7 +122,7 @@ Object oSelectMenuItems is a cWebView
             Set psCSSClass to "WebClearMenuItem"
             Set psCaption to "New"
 
-            WebRegisterPath ntNavigateForward oMenuItem
+            WebRegisterPath ntNavigateForward oBookingZoom
 
             Procedure OnClick
                 Send NavigatePath

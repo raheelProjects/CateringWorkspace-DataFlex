@@ -1,0 +1,78 @@
+﻿Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebGroup.pkg
+Use cWebSpacer.pkg
+Use cWebHtmlBox.pkg
+Use cWebForm.pkg 
+Use BookingSelect.wo
+Use BookingDetailSelect.wo
+
+Object oBookingWebView is a cWebView
+    Set piWidth to 700
+    Set psCaption to "Bookings"
+
+    // Your DDO structure will go here
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        
+        Object oTiles_grp is a cWebGroup
+            Set piColumnSpan to 8
+            Set pbShowBorder to False
+            Set pbShowCaption to False
+            Set piColumnCount to 12
+            
+            Set psCSSClass to "TilesGroup"
+    
+            
+    
+//            Object oTile2 is a cWebHtmlBox
+//                Set pbServerOnClick to True
+//                Set piColumnSpan to 6
+//                Set piColumnIndex to 6
+//                Set psCSSClass to "Tile LightAlternate"
+//                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Tile 2</div><div class="Tile_Subtitle"></div></div>'
+//                                
+//                // WebRegisterPath ntNavigateForwardCustom oYourViewName
+//                
+//                Procedure OnClick String sId String sParam
+//                    Send NavigatePath
+//                End_Procedure
+//                
+//            End_Object
+    
+            Object oTile3 is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Dark"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Create Booking</div><div class="Tile_Subtitle"></div></div>'
+    
+                WebRegisterPath ntNavigateForwardCustom oBookingSelect
+                
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+                
+            End_Object
+    
+            Object oTile4 is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set piColumnIndex to 6
+                Set psCSSClass to "Tile DarkAlternate"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div Class="Tile_Title">Show Booking Detail</div><div class="Tile_Subtitle"></div></div>'
+            
+                WebRegisterPath ntNavigateForwardCustom oBookingDetailSelect
+                
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+                
+            End_Object
+            
+
+        End_Object
+        
+    End_Object 
+
+End_Object

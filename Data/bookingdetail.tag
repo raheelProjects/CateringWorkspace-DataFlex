@@ -1,0 +1,5 @@
+BookingDetailId
+BookingId
+ItemId
+Quantity
+totalAmount

@@ -2,6 +2,7 @@
 
 Open MenuItems
 Open SysFile
+Open BookingDetail
 
 Object cusineType is a ValidationTable
     Procedure Fill_List
@@ -18,6 +19,8 @@ Class cMenuItemsDataDictionary is a DataDictionary
         Forward Send Construct_Object
         Set Main_File to MenuItems.File_Number
 
+        Set Add_Client_File to BookingDetail.File_Number
+
         Set Add_System_File to SysFile.File_Number DD_Lock_On_All
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
@@ -25,7 +28,7 @@ Class cMenuItemsDataDictionary is a DataDictionary
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
 
-        Set Field_Auto_Increment Field MenuItems.itemId to File_Field SysFile.MenuItemId
+        Set Field_Auto_Increment Field MenuItems.ItemId to File_Field SysFile.MenuItemId
 
         Set Field_Value_Table Field MenuItems.cusineType to cusineType
 
