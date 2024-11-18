@@ -1,0 +1,30 @@
+# Ignore compiled application binaries
+AppHtml/*.js
+AppHtml/*.css
+AppHtml/*.html
+
+# Ignore temporary files
+*.bak
+*.tmp
+*.~*
+*.sws
+*.log
+*.dfm
+*.err
+
+# Ignore user-specific settings
+*.swp
+*.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Ignore compiled program files
+Programs/*.exe
+Programs/*.dll
+Programs/*.dbg
+
+# Ignore workspace folders and settings
+CCH/*
+ID/*
+DFEngine/*
